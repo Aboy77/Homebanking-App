@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="./style.css">
+    <title>Homebanking</title>
+</head>
+
+<body class="body">
+    <div id="app">
+        <header>
+            <img src="./img/logo.png" alt="Mindhub-brothers-logo" class="logo">
+        </header>
+
+        <div class="container m-t">
+            <div class="row row justify-content-md-center f-h">
+                <div class="col-lg-8 col-sm-12 flex-col">
+                    <p class="title">Register Clients</p>
+                    <form @submit="send">
+                        <div class="form-group">
+                            <label for="name">Fisrt Name: </label>
+                            <input type="text" id="name" name="First_name" v-model="firstName" @input="verify" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="last">Last Name: </label>
+                            <input type="text" id="last" name="Last_name" v-model="lastName" @input="verify" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Email: </label>
+                            <input type="email" id="email" name="email" v-model="email" @input="verify" required>
+                        </div>
+                        <input type="submit" value="Enviar" disabled>
+                    </form>
+
+                    <div class="margin">
+                        <input type="button" value="Modificar" @click="modiButton" class="margin">
+                        <input type="button" value="Borrar" @click="borrar" class="margin">
+                    </div>
+
+                    <label>Find by name:  
+                        <input type="text" @input="findClients" placeholder="First Name" class="m-b m-l" @click="saveClients">
+                    </label>
+
+                    <table class="table sm-mt t-c">
+                        <thead>
+                            <tr>
+                                <th>First name</th>
+                                <th>Last name</th>
+                                <th>email</th>
+                                <th v-if="modifyB || deleteButton">Select</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="cliente in clientes">
+                                <td>{{cliente.firstName}}</td>
+                                <td>{{cliente.lastName}}</td>
+                                <td>{{cliente.email}}</td>
+                                <td><input v-if="modifyB || deleteButton" type="checkbox" :value="cliente"
+                                        v-model="modifySelected" class="m-l"></td>
+                            </tr>
+                            <tr v-if="clientes.length == 0">
+                                <td colspan="3">Empty</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div v-show="modifyConfirm" class="w-f">
+                        <p class="title t-c">Modificar</p>
+                        <table class="table tc">
+                            <thead>
+                                <tr>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Email</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="client in modifySelected">
+                                    <!-- <label>{{client.firstName}}</label> -->
+                                    <td><input type="text" :id="client._links.client.href" name="firstName"
+                                            @input="inputs" :placeholder="client.firstName"></td>
+                                    <td><input type="text" :id="client._links.client.href" name="lastName"
+                                            @input="inputs" :placeholder="client.lastName"></td>
+                                    <td><input type="email" :id="client._links.client.href" name="email" @input="inputs"
+                                            :placeholder="client.email"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div v-if="modifyB || deleteButton" class="margin">
+                        <input type="button" value="Aceptar" @click="acept" class="margin">
+                        <input type="button" value="Cancelar" @click="cancel" class="margin">
+                    </div>
+
+                    <div v-if="sendPut">
+                        <input type="button" @click="sendChanges" value="Modify" disabled id="modify">
+                        <input type="button" value="Cancelar" @click="cancel" class="margin">
+                    </div>
+
+                </div>
+
+                <div class="col-lg-4 col-sm-12 sm-mt">
+                    <h2>Clients</h2>
+                    <pre style="word-wrap: break-word; white-space: pre-wrap;">{{html}}</pre>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; Mindhud Brothers 2021</p>
+        </footer>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="./manager.js"></script>
+</body>
+
+</html>

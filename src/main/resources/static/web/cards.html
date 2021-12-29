@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="./style.css">
+    <title>Account</title>
+</head>
+
+<body>
+    <div class="flex-col j-c-s-b">
+        <div class="background-card position-c"></div>
+        <main class="flex-row sm-col-flex">
+            <div class="info flex-col a-i-c j-c-s-b sm-row-flex hide-sm" id="newPage">
+                <i class="bi bi-house icons" id="accounts"></i>
+                <i class="bi bi-wallet icons i-active" id="cards"></i>
+                <i class="bi bi-cash-coin icons" id="transfer"></i>
+                <i class="bi bi-credit-card icons" id="create-c"></i>
+                <i class="bi bi-headset icons" id="support"></i>
+            </div>
+
+            <div class="w-f t-c" id="app" v-cloak>
+
+                <div class="w-f t-c">
+                    <h2 class="m-t">Welcome, {{data.firstName}} {{data.lastName}}</h2>
+                    <input type="button" value="Ask for Cards" class="button m-t" @click="createCard" v-if="!fullCards">
+                    <div class="flex-card j-c-s-a m-t f-w-w">
+                        <div @click="cardEvents" v-for="card in cards" :id="card.id" class="cards">
+                            <h3 class="m-b">{{card.type}}</h3>
+                            <div class="card-front"
+                                :class="{'card-front-silver' : card.color == 'SILVER', 'card-front-gold' : card.color == 'GOLD', 'card-front-titanium' : card.color == 'TITANIUM'} "
+                                id="card-front">
+                                <img src="../img/eagle.png" class="triangle">
+                                <div class="content">
+                                    <div class="flex-card j-c-s-b a-i-c">
+                                        <img src="../img/logo-card.png" alt="MindHub" class="logo-c">
+                                        <img src="../img/signal.png" alt="" class="signal">
+                                    </div>
+                                    <div class="flex-card j-c-l">
+                                        <img src="../img/gold.png" class="gold">
+                                    </div>
+                                    <div class="flex-card j-c-c a-i-c">
+                                        <p class="f-w-b">{{numbers(card.number)}}</p>
+                                    </div>
+                                    <div class="flex-card j-c-s-a">
+                                        <p :class="{'card-red' : card.thru == !false}">{{card.thruDate}}</p>
+                                    </div>
+                                    <div class="flex-card j-c-s-b">
+                                        <p class="uppercase">Melba Morel</p>
+                                        <img src="../img/visa.png" class="visa">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-back"
+                                :class="{'card-front-silver' : card.color == 'SILVER', 'card-front-gold' : card.color == 'GOLD', 'card-front-titanium' : card.color == 'TITANIUM'}"
+                                id="card-back">
+                                <div class="line"></div>
+                                <div class="content">
+                                    <div class="flex-card j-c-s-a" id="back">
+                                        <div class="line-2"></div>
+                                        <div class="line-3 flex-card a-i-c">
+                                            <p>{{card.cvu}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="sign">
+                                        <div class="sign-c"></div>
+                                        <div class="sign-d"></div>
+                                        <div class="sign-e">
+                                            <div class="sign-f"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="./cards.js"></script>
+</body>
+
+</html>

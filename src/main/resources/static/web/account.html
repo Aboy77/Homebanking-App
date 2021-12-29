@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="./style.css">
+    <title>Account</title>
+</head>
+
+<body>
+    <div class="flex-col j-c-s-b">
+
+        <main class="flex-row sm-col-flex">
+            <div class="info flex-col a-i-c j-c-s-b sm-row-flex hide-sm" id="newPage">
+                <i class="bi bi-house icons i-active" id="accounts"></i>
+                <i class="bi bi-wallet icons" id="cards"></i>
+                <i class="bi bi-cash-coin icons" id="transfer"></i>
+                <i class="bi bi-credit-card icons" id="create-c"></i>
+                <i class="bi bi-headset icons" id="support"></i>
+            </div>
+
+            <div class="w-f t-c" id="app" v-cloak>
+                <h2 class="m-t">Welcome, {{clients.firstName}} {{clients.lastName}}</h2>
+                <nav class="medium">
+                    <a href="/web/accounts.html">General</a>
+                    <a href="/web/account.html?id=1" class="active">Accounts</a>
+                    <a href="/web/cards.html" @click="showCards">Cards</a>
+                </nav>
+                <input type="button" value="Download resume" class="button-a uppercase" @click="downloadResume"
+                    v-if="account">
+
+                <div class="account" v-if="account">
+                    <h3>&dollar;{{accounts.balance}}</h3>
+                    <div class="flex-row j-c-s-a m-t-account">
+                        <div class="flex-col a-i-c">
+                            <i class="bi bi-currency-dollar icon b-c-one" @click="investment"></i>
+                            <input type="button" value="Send" class="account-view" @click="investment">
+                        </div>
+                        <div class="flex-col a-i-c" @click="transferE">
+                            <i class="bi bi-cursor icon b-c-two"></i>
+                            <input type="button" value="Withdraw" class="account-view">
+                        </div>
+                        <div class="flex-col a-i-c" @click="downloadResume">
+                            <i class="bi bi-percent icon b-c-three"></i>
+                            <input type="button" value="Resume" class="account-view">
+                        </div>
+                    </div>
+                    <p class="color-p m-t">Movements</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Type</th>
+                                <th>Date</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tr v-for="data in transactions">
+                            <td>{{data.description}}</td>
+                            <td>{{data.type}}</td>
+                            <td>{{data.date}}</td>
+                            <td v-if="data.type == 'Credit'" class="color-g">$ +{{data.amount}}</td>
+                            <td v-if="data.type == 'Debit'" class="color-r">$ -{{data.amount}}</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h2 v-if="account">Invest info</h2>
+
+                <div class="flex-row j-c-s-a m-t-account" v-if="account">
+                    <div class="exchange" v-for="change in exchange">
+                        <div class="flex-row j-c-s-b t-c">
+                            <p class="color-p">Compra</p>
+                            <p class="color-p">Venta</p>
+                        </div>
+                        <div class="flex-row j-c-s-b a-i-c">
+                            <p>ARS&dollar;{{change.casa.compra}}</p>
+                            <p>ARS&dollar;{{change.casa.venta}}</p>
+                        </div>
+                        <h3>{{change.casa.nombre}}</h3>
+                        <p v-if="change.casa.variacion.indexOf('-') != -1" class="alert">24HS:
+                            &dollar;{{change.casa.variacion}}</p>
+                        <p v-if="change.casa.variacion.indexOf('-') == -1" class="stable">24HS:
+                            &dollar;{{change.casa.variacion}}</p>
+                    </div>
+                </div>
+                <!-- Ivest section -->
+                <div class="invest" v-if="invest">
+                    <p class="color-p t-deco-u-line m-t">The CBU must be of another client</p>
+                    <div class="flex-col a-i-f-s">
+                        <p class="input-text-gray">Max: ${{accounts.balance}}</p>
+                        <input type="number" placeholder="Insert amount" class="amount-i input-text-p"
+                            @input="amountInvest">
+                        <input type="number" placeholder="Insert cbu" class="amount-i input-text-p m-t"
+                            v-model="transferInfo.cbu">
+                    </div>
+                    <div class="flex-row">
+                        <a class="t-button" @click="backAccount">Back</a>
+                        <a class="c-button" @click="sendInvest">Send</a>
+                    </div>
+                </div>
+
+                <!-- Transfer section -->
+                <div class="invest" v-if="transfer">
+                    <div class="err" id="err"></div>
+                    <h3>Transfer</h3>
+                    <div class="flex-col a-i-f-s">
+                        <p class="input-text-gray">Max: ${{accounts.balance}}</p>
+                        <input type="number" placeholder="Insert amount" class="amount-i input-text-p"
+                            @input="transferEvent">
+                        <div class="flex-row j-c-s-a w-f m-t m-b">
+                            <label for="description" class="color-p">Description: </label>
+                            <input type="text" v-model="transferInfo.description" placeholder="Description"
+                                id="description">
+                        </div>
+                        <div class="flex-col j-c-c w-f">
+                            <label for="account" class="color-p">Select account:</label>
+                        <select v-model="transferInfo.selected" id="account" class="c-button t-c select">
+                            <option value="" selected disabled>Select</option>
+                            <option v-for="info in transferInfo.accounts">{{info.number}}</option>
+                        </select>
+                        </div>
+                    </div>
+                    <div class="flex-row">
+                        <a class="t-button" @click="createBack">Back</a>
+                        <a class="c-button" @click="sendTransfer">Send</a>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="./account.js"></script>
+</body>
+
+</html>

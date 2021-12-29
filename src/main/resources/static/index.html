@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="./style.css">
+    <title>Homebanking</title>
+</head>
+
+<body class="body">
+    <div class="model">
+        <div class="spinn">
+            <div class="lds-roller">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    </div>
+    <div class="header">
+
+
+        <div class="inner-header flex">
+            <h1>Mind Hub brothers</h1>
+        </div>
+
+        <div id="app" v-cloak>
+            <div class="flex-log">
+                <div class="log-form">
+                    <div class="error" id="err">fail</div>
+                    <div id="form">
+                        <form @input="formInputs" v-if="form">
+                            <label>User:
+                                <input type="email" placeholder="correo@correo.com" name="email" required>
+                            </label>
+                            <label>Password:
+                                <input type="password" placeholder="password" name="password" required>
+                                <a class="btn-form" @click="createAccount">Create account</a>
+                            </label>
+                            <input type="submit" class="submit" value="Log In" @click="logIn">
+                        </form>
+                        <form v-if="register" @input="formInputs" @submit="registerClient">
+                            <div class="form-card">
+                                <div>
+                                    <label>First Name:
+                                        <input type="text" placeholder="First Name" name="FirstName">
+                                    </label>
+                                    <label>Last name:
+                                        <input type="text" placeholder="Last Name" name="LastName">
+                                    </label>
+                                </div>
+                                <div>
+                                    <label>Email:
+                                        <input type="email" placeholder="correo@correo.com" name="email" required>
+                                    </label>
+                                    <label>Password:
+                                        <input type="password" placeholder="Password" name="password" required>
+                                    </label>
+                                </div>
+                            </div>
+                            <a class="btn-form" @click="logInPage">Log In</a>
+                            <input type="submit" class="submit" value="Sing In">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div>
+            <svg class="waves" xmlns="http://www.w3.orgF2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+                <defs>
+                    <path id="gentle-wave"
+                        d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+                </defs>
+                <g class="parallax">
+                    <use xlink:href="#gentle-wave" x="48" y="0" fill="rgb(11, 109, 255,.4)" />
+                    <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(18,205,34,.5)" />
+                    <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
+                    <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
+                </g>
+            </svg>
+        </div>
+
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="./log.js"></script>
+</body>
+
+</html>
