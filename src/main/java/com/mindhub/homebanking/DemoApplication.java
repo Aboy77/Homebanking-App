@@ -30,9 +30,9 @@ public class DemoApplication {
 
 			Client cliente1 = new Client("Melba", "Morel", "melba@mindhub.com", passwordEncoder.encode("Melba1"));
 			Client cliente2 = new Client("Brian", "Cuenca", "correo@correo.com", passwordEncoder.encode("Aword7732#"));
-			Account account1 = new Account("VIN001", LocalDate.now(), "5000", cliente1, AccountType.REGULAR, 2312312321L);
-			Account account2 = new Account("VIN002", LocalDate.now().plusDays(1), "7500", cliente1, AccountType.SAVING, 3267656734L);
-			Account account3 = new Account("Vin003", LocalDate.now(), "10000", cliente2, AccountType.REGULAR, 3415765654L);
+			Account account1 = new Account("VIN001", LocalDate.now(), "5000", cliente1, AccountType.REGULAR, 23123123L);
+			Account account2 = new Account("VIN002", LocalDate.now().plusDays(1), "7500", cliente1, AccountType.SAVING, 3267656L);
+			Account account3 = new Account("Vin003", LocalDate.now(), "10000", cliente2, AccountType.REGULAR, 3415765L);
 
 			Transaction transaction1 = new Transaction(TransactionType.Credit, 3000, "BNB", LocalDate.now());
 			Transaction transaction2 = new Transaction(TransactionType.Debit, 1000, "Donation", LocalDate.now());
