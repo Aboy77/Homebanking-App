@@ -93,11 +93,14 @@ const app = Vue.createApp({
                         this.accountsCreate = false;
                 },
                 logout(e) {
-                        axios.post("/api/logout")
-                                .then(res => {
-                                        window.location.href = "/index.html"
-                                })
-                                .catch(err => console.log(err))
+                        //delete account
+                        axios.delete("/api/delete").then(res => {
+                                axios.post("/api/logout")
+                                        .then(res => {
+                                                // return to the Index template
+                                                window.location.href = "/index.html"
+                                        }).catch(err => console.log(err))
+                        }).catch(err => console.log(err))
                 },
                 createAccount() {
                         axios.post("/api/clients/current/account").then(res => console.log(res)).catch(err => console.log(err))

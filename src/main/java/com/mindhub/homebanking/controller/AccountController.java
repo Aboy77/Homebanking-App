@@ -11,6 +11,7 @@ import com.mindhub.homebanking.repository.AccountRepository;
 import com.mindhub.homebanking.repository.CardRepository;
 import com.mindhub.homebanking.repository.ClientRepository;
 import com.mindhub.homebanking.repository.TransactionRepository;
+import com.mindhub.homebanking.services.implementation.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +41,9 @@ public class AccountController {
     @Autowired
     private CardRepository cardRepository;
 
+    @Autowired
+    private AccountService accountService;
+
     @GetMapping("/api/accounts")
     public List<AccountDTO> getAll() {
         return accountRepository.findAll().stream().map(AccountDTO::new).collect(Collectors.toList());
@@ -53,7 +57,7 @@ public class AccountController {
     @PostMapping("/api/clients/current/account")
     public ResponseEntity<?> createAccount(Authentication authentication, @RequestParam AccountType accountType) {
 
-        int random = (int) (Math.random() * (9999999 - 1000000) + 1000000);
+        int random = accountService.createAccNumber();
 
 
         String number = "VIN";
