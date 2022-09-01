@@ -8,6 +8,7 @@ import com.mindhub.homebanking.models.AccountType;
 import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.repository.AccountRepository;
 import com.mindhub.homebanking.repository.ClientRepository;
+import com.mindhub.homebanking.services.implementation.AccountService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -32,6 +33,9 @@ public class ClientController {
     @Autowired
     private AccountRepository accountRepository;
 
+    @Autowired
+    private AccountService accountService;
+
     @GetMapping("/api/clients/{id}")
     public ClientDTO getClient(@PathVariable Long id) {
         return clientRepository.findById(id).map(ClientDTO::new).orElse(null);
@@ -39,7 +43,8 @@ public class ClientController {
 
     @PostMapping("/api/clients")
     public ResponseEntity<Client> register(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String email, @RequestParam String password) {
-        int random = (int) (Math.random() * (9999999 - 1000000) + 1000000);
+        int random = accountService.createAccNumber();
+
 
         if(firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
